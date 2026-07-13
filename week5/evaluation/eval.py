@@ -155,7 +155,7 @@ Provide detailed feedback and scores from 1 (very poor) to 5 (ideal) for each di
     # Call LLM judge with structured outputs (async)
     judge_response = completion(model=MODEL, messages=judge_messages, response_format=AnswerEval)
 
-    answer_eval = AnswerEval.model_validate_json(judge_response.choices[0].message.content)
+    answer_eval = AnswerEval.model_validate_json(judge_response.choices[0].message.content) # type: ignore
 
     return answer_eval, generated_answer, retrieved_docs
 
@@ -183,7 +183,7 @@ def evaluate_all_answers():
 def run_cli_evaluation(test_number: int):
     """Run evaluation for a specific test (async helper for CLI)."""
     # Load tests
-    tests = load_tests("tests.jsonl")
+    tests = load_tests("tests.jsonl") #type: ignore
 
     if test_number < 0 or test_number >= len(tests):
         print(f"Error: test_row_number must be between 0 and {len(tests) - 1}")

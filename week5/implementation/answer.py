@@ -13,8 +13,8 @@ load_dotenv(override=True)
 MODEL = "gpt-4.1-nano"
 DB_NAME = str(Path(__file__).parent.parent / "vector_db")
 
-# embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+#embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 RETRIEVAL_K = 10
 
 SYSTEM_PROMPT = """
@@ -28,7 +28,7 @@ Context:
 
 vectorstore = Chroma(persist_directory=DB_NAME, embedding_function=embeddings)
 retriever = vectorstore.as_retriever()
-llm = ChatOpenAI(temperature=0, model_name=MODEL)
+llm = ChatOpenAI(temperature=0, model_name=MODEL) # type: ignore
 
 
 def fetch_context(question: str) -> list[Document]:
@@ -55,7 +55,7 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     context = "\n\n".join(doc.page_content for doc in docs)
     system_prompt = SYSTEM_PROMPT.format(context=context)
     messages = [SystemMessage(content=system_prompt)]
-    messages.extend(convert_to_messages(history))
-    messages.append(HumanMessage(content=question))
+    messages.extend(convert_to_messages(history)) # type: ignore
+    messages.append(HumanMessage(content=question)) # type: ignore
     response = llm.invoke(messages)
-    return response.content, docs
+    return response.content, docs # type: ignore

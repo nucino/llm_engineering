@@ -172,7 +172,7 @@ def run_answer_evaluation(progress=gr.Progress()):
 
 def main():
     """Launch the Gradio evaluation app."""
-    theme = gr.themes.Soft(font=["Inter", "system-ui", "sans-serif"])
+    theme = gr.themes.Soft(font=["Inter", "system-ui", "sans-serif"]) # type: ignore
 
     with gr.Blocks(title="RAG Evaluation Dashboard", theme=theme) as app:
         gr.Markdown("# 📊 RAG Evaluation Dashboard")
